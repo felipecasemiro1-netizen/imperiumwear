@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IMPERIUM WEAR</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0A0A0A;
+  --black-mid: #111111;
+  --black-light: #1A1A1A;
+  --silver: #D8D8D8;
+  --gold: #C9A84C;
+  --gold-light: #E2C97E;
+  --gold-faint: rgba(201,168,76,0.08);
+  --silver-light: #F0F0F0;
+  --silver-dim: rgba(216,216,216,0.55);
+  --silver-faint: rgba(216,216,216,0.08);
+  --white: #F5F5F5;
+  --white-dim: rgba(245,245,245,0.55);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Outfit', sans-serif;
+  overflow-x: hidden;
+}
+
+/* NOISE */
+body::after {
+  content:'';
+  position:fixed; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:999; opacity:0.5;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top:0; left:0; right:0;
+  z-index: 100;
+  padding: 20px 40px;
+  display: flex; align-items:center; justify-content:space-between;
+  background: linear-gradient(180deg, rgba(10,10,10,0.95) 0%, transparent 100%);
+  backdrop-filter: blur(8px);
+}
+
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 4px;
+  color: var(--white);
+}
+.nav-logo span { color: var(--gold); }
+
+.nav-links { display:flex; gap:32px; }
+.nav-links a {
+  font-size: 12px; font-weight: 400;
+  text-transform: uppercase; letter-spacing: 2px;
+  color: var(--white-dim); text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--gold); }
+
+.nav-cta {
+  background: none;
+  border: 1px solid rgba(201,168,76,0.4);
+  border-radius: 2px;
+  padding: 8px 20px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 2px;
+  color: var(--gold); cursor: pointer;
+  transition: all 0.2s; text-decoration: none;
+}
+.nav-cta:hover { background: var(--gold); color: var(--black); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction:column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  padding: 120px 40px 80px;
+}
+
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 30%, rgba(216,216,216,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(216,216,216,0.04) 0%, transparent 60%),
+    linear-gradient(180deg, #0A0A0A 0%, #111111 100%);
+}
+
+.hero-line {
+  width: 1px; height: 80px;
+  background: linear-gradient(180deg, transparent, var(--gold));
+  margin: 0 auto 40px;
+  animation: lineGrow 1.2s ease both;
+}
+
+@keyframes lineGrow {
+  from { height:0; opacity:0; }
+  to { height:80px; opacity:1; }
+}
+
+.hero-tag {
+  font-size: 11px; font-weight: 400;
+  text-transform: uppercase; letter-spacing: 4px;
+  color: var(--silver-dim);
+  margin-bottom: 20px;
+  animation: fadeUp 0.8s ease 0.3s both;
+}
+
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 12vw, 140px);
+  letter-spacing: 8px;
+  line-height: 0.9;
+  color: var(--white);
+  margin-bottom: 8px;
+  animation: fadeUp 0.8s ease 0.5s both;
+}
+
+.hero-title span { color: var(--silver); }
+
+.hero-subtitle {
+  font-size: 14px; font-weight: 300;
+  color: var(--white-dim); letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 48px;
+  animation: fadeUp 0.8s ease 0.7s both;
+}
+
+.hero-btns {
+  display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+  animation: fadeUp 0.8s ease 0.9s both;
+}
+
+.btn-primary {
+  background: var(--gold);
+  border: none; border-radius: 2px;
+  padding: 14px 36px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 3px;
+  color: var(--black); cursor: pointer;
+  transition: all 0.25s; text-decoration: none;
+}
+.btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+.btn-secondary {
+  background: none;
+  border: 1px solid rgba(216,216,216,0.3);
+  border-radius: 2px;
+  padding: 14px 36px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px; font-weight: 400;
+  text-transform: uppercase; letter-spacing: 3px;
+  color: var(--silver); cursor: pointer;
+  transition: all 0.25s; text-decoration: none;
+}
+.btn-secondary:hover { border-color: var(--silver); transform: translateY(-2px); }
+
+.scroll-hint {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  font-size: 10px; text-transform: uppercase; letter-spacing: 3px;
+  color: var(--white-dim);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  animation: fadeUp 1s ease 1.2s both;
+}
+
+.scroll-hint::after {
+  content: '';
+  width: 1px; height: 40px;
+  background: linear-gradient(180deg, var(--gold), transparent);
+  animation: scrollPulse 2s ease infinite;
+}
+
+@keyframes scrollPulse {
+  0%,100% { opacity:0.3; transform:scaleY(1); }
+  50% { opacity:1; transform:scaleY(1.1); }
+}
+
+/* ── SECTION ── */
+section { padding: 60px 40px; max-width: 1200px; margin: 0 auto; }
+
+.section-tag {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 4px;
+  color: var(--gold); opacity: 0.7; margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(42px, 6vw, 72px);
+  letter-spacing: 4px; line-height: 1;
+  margin-bottom: 48px;
+}
+
+.section-title span { color: var(--silver); }
+
+.divider {
+  width: 40px; height: 1px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent);
+  margin-bottom: 24px;
+}
+
+/* ── SOBRE ── */
+.sobre-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.sobre-visual {
+  position: relative;
+}
+
+.sobre-box {
+  background: var(--black-light);
+  border: 1px solid rgba(216,216,216,0.1);
+  aspect-ratio: 3/4;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+
+.sobre-box-inner {
+  text-align: center; padding: 40px;
+}
+
+.sobre-icon {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 120px; line-height: 1;
+  color: rgba(216,216,216,0.06);
+  position: absolute;
+}
+
+.sobre-box-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 48px; letter-spacing: 4px;
+  color: var(--gold); position: relative; z-index: 1;
+}
+
+.sobre-box::before {
+  content: '';
+  position: absolute; top:0; left:0; right:0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), transparent);
+}
+
+.sobre-accent {
+  position: absolute; bottom: -20px; right: -20px;
+  width: 100px; height: 100px;
+  border: 1px solid rgba(201,168,76,0.3);
+}
+
+.sobre-text p {
+  font-size: 15px; font-weight: 300;
+  color: var(--white-dim); line-height: 1.9;
+  margin-bottom: 20px;
+}
+
+.sobre-text p strong { color: var(--white); font-weight: 500; }
+
+.sobre-stats {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 24px; margin-top: 40px;
+}
+
+.stat-item { border-left: 2px solid var(--gold); padding-left: 16px; }
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 42px; letter-spacing: 2px; color: var(--gold); line-height: 1;
+}
+.stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--white-dim); margin-top: 4px; }
+
+/* ── COLEÇÃO ── */
+.colecao-wrap { padding: 40px 0; }
+.colecao-header { padding: 0 40px; max-width: 900px; margin: 0 auto 48px; display:flex; align-items:flex-end; justify-content:space-between; }
+
+.colecao-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 0 40px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.produto-card {
+  background: var(--black-light);
+  border: 1px solid rgba(216,216,216,0.06);
+  overflow: hidden; cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.produto-card:hover { border-color: rgba(216,216,216,0.25); }
+.produto-card:hover .produto-img-placeholder { transform: scale(1.03); }
+
+.produto-img-wrap { overflow: hidden; aspect-ratio: 3/4; position: relative; }
+
+.produto-img-placeholder {
+  width: 100%; height: 100%;
+  background: var(--black-mid);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.5s ease;
+  position: relative;
+}
+
+.produto-img-placeholder::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(216,216,216,0.03) 0%, transparent 60%);
+}
+
+.produto-placeholder-icon {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 64px; letter-spacing: 2px;
+  color: rgba(216,216,216,0.08);
+}
+
+.produto-img-real {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.produto-overlay {
+  position: absolute; inset: 0;
+  background: rgba(10,10,10,0.6);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.3s;
+}
+
+.produto-card:hover .produto-overlay { opacity: 1; }
+
+.produto-overlay-btn {
+  background: var(--gold);
+  border: none; border-radius: 2px;
+  padding: 10px 24px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 2px;
+  color: var(--black); cursor: pointer;
+}
+
+.produto-info { padding: 16px; }
+.produto-nome { font-size: 13px; font-weight: 500; color: var(--white); margin-bottom: 4px; }
+.produto-cat { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--silver-dim); }
+.produto-preco { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1px; color: var(--gold); margin-top: 6px; }
+
+.produto-badge {
+  position: absolute; top: 12px; left: 12px;
+  background: var(--gold);
+  padding: 3px 10px;
+  font-size: 9px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 2px;
+  color: var(--black);
+}
+
+/* ── ADMIN ── */
+.admin-section {
+  background: var(--black-mid);
+  border-top: 1px solid rgba(216,216,216,0.08);
+  border-bottom: 1px solid rgba(216,216,216,0.08);
+  padding: 60px 40px;
+}
+
+.admin-inner { max-width: 1200px; margin: 0 auto; }
+
+.admin-toggle {
+  display: flex; align-items: center; gap: 14px;
+  cursor: pointer; user-select: none;
+  margin-bottom: 0;
+}
+
+.admin-toggle-icon {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(216,216,216,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; color: var(--silver);
+  transition: all 0.2s;
+}
+
+.admin-toggle:hover .admin-toggle-icon { background: var(--gold); color: var(--black); }
+
+.admin-toggle-label {
+  font-size: 12px; text-transform: uppercase; letter-spacing: 3px;
+  color: var(--silver-dim);
+}
+
+.admin-panel {
+  display: none;
+  margin-top: 40px;
+  border-top: 1px solid rgba(216,216,216,0.08);
+  padding-top: 40px;
+}
+
+.admin-panel.open { display: block; }
+
+.admin-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px; letter-spacing: 3px; color: var(--white);
+  margin-bottom: 24px;
+}
+
+.admin-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.admin-form-full { grid-column: 1 / -1; }
+
+.admin-label {
+  display: block; font-size: 10px; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--silver-dim); margin-bottom: 6px;
+}
+
+.admin-input {
+  width: 100%;
+  background: rgba(216,216,216,0.05);
+  border: 1px solid rgba(216,216,216,0.15);
+  border-radius: 2px;
+  padding: 12px 14px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px; color: var(--white); outline: none;
+  transition: border-color 0.2s;
+}
+
+.admin-input:focus { border-color: var(--silver-dim); }
+.admin-input::placeholder { color: rgba(216,216,216,0.3); }
+
+.admin-input-file {
+  width: 100%;
+  background: rgba(216,216,216,0.05);
+  border: 1px dashed rgba(216,216,216,0.2);
+  border-radius: 2px;
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  color: var(--silver-dim);
+  font-size: 13px;
+  transition: border-color 0.2s;
+}
+.admin-input-file:hover { border-color: var(--silver); }
+
+.admin-btn {
+  background: var(--gold);
+  border: none; border-radius: 2px;
+  padding: 14px 32px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 3px;
+  color: var(--black); cursor: pointer;
+  transition: all 0.2s;
+}
+.admin-btn:hover { background: var(--gold-light); }
+
+.admin-produtos-list { margin-top: 32px; }
+.admin-produto-item {
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(216,216,216,0.06);
+}
+.admin-produto-thumb {
+  width: 48px; height: 60px;
+  background: var(--black-light);
+  border: 1px solid rgba(216,216,216,0.1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: var(--silver-dim);
+  overflow: hidden; flex-shrink: 0;
+}
+.admin-produto-thumb img { width:100%; height:100%; object-fit:cover; }
+.admin-produto-info { flex: 1; }
+.admin-produto-nome { font-size: 13px; font-weight: 500; color: var(--white); }
+.admin-produto-meta { font-size: 11px; color: var(--silver-dim); margin-top: 2px; }
+.admin-produto-del {
+  background: none; border: 1px solid rgba(220,60,60,0.25);
+  border-radius: 2px; padding: 6px 12px;
+  font-size: 11px; color: rgba(220,100,100,0.7); cursor: pointer;
+  transition: all 0.2s;
+}
+.admin-produto-del:hover { background: rgba(220,60,60,0.1); }
+
+/* ── CONTATO ── */
+.contato-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: start;
+}
+
+.contato-text p {
+  font-size: 15px; font-weight: 300;
+  color: var(--white-dim); line-height: 1.9;
+  margin-bottom: 32px;
+}
+
+.contato-links { display: flex; flex-direction: column; gap: 16px; }
+
+.contato-link {
+  display: flex; align-items: center; gap: 16px;
+  text-decoration: none; padding: 16px;
+  border: 1px solid rgba(216,216,216,0.08);
+  transition: all 0.2s;
+}
+.contato-link:hover { border-color: var(--gold); background: var(--gold-faint); }
+.contato-link-icon { font-size: 20px; width: 32px; text-align: center; }
+.contato-link-info {}
+.contato-link-label { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--silver-dim); }
+.contato-link-value { font-size: 14px; font-weight: 400; color: var(--white); margin-top: 2px; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid rgba(201,168,76,0.15);
+  padding: 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  max-width: 100%;
+}
+
+.footer-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px; letter-spacing: 4px; color: var(--white-dim);
+}
+.footer-logo span { color: var(--gold); }
+
+.footer-copy { font-size: 11px; color: rgba(216,216,216,0.3); letter-spacing: 1px; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.reveal {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--black-light); border: 1px solid rgba(216,216,216,0.3);
+  border-radius: 2px; padding: 14px 20px;
+  font-size: 13px; color: var(--white); z-index: 500;
+  transform: translateY(80px); opacity: 0;
+  transition: all 0.35s cubic-bezier(0.34,1.3,0.64,1);
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  nav { padding: 16px 20px; }
+  .nav-links { display: none; }
+  section { padding: 60px 20px; }
+  .sobre-grid, .contato-grid { grid-template-columns: 1fr; gap: 40px; }
+  .colecao-grid { grid-template-columns: repeat(2, 1fr); padding: 0 20px; }
+  .colecao-header { padding: 0 20px; flex-direction: column; align-items: flex-start; gap: 12px; }
+  .admin-form { grid-template-columns: 1fr; }
+  .admin-section { padding: 40px 20px; }
+  footer { padding: 24px 20px; flex-direction: column; gap: 12px; text-align: center; }
+  .hero-title { font-size: 72px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">IMPERIUM<span style="background:linear-gradient(135deg,#D8D8D8 0%,#F5F5F5 40%,#D8D8D8 60%,#B8B8B8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">WEAR</span></div>
+  <div class="nav-links">
+    <a href="#sobre">Sobre</a>
+    <a href="#colecao">Coleção</a>
+    <a href="#contato">Contato</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <button onclick="toggleCart()" style="background:none;border:none;cursor:pointer;position:relative;padding:4px;">
+      <span style="font-size:22px;">🛒</span>
+      <span id="cart-badge" style="display:none;position:absolute;top:-4px;right:-4px;background:var(--gold);color:var(--black);font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;">0</span>
+    </button>
+    <a href="#contato" class="nav-cta">Fale Conosco</a>
+  </div>
+</nav>
+
+<!-- CARRINHO LATERAL -->
+<div id="cart-overlay" onclick="toggleCart()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:300;"></div>
+<div id="cart-panel" style="position:fixed;top:0;right:-420px;width:420px;max-width:100vw;height:100vh;background:var(--black-light);border-left:1px solid rgba(201,168,76,0.2);z-index:400;display:flex;flex-direction:column;transition:right 0.35s cubic-bezier(0.34,1,0.64,1);overflow:hidden;">
+  <div style="padding:24px;border-bottom:1px solid rgba(201,168,76,0.15);display:flex;align-items:center;justify-content:space-between;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;">MEU CARRINHO</div>
+    <button onclick="toggleCart()" style="background:none;border:1px solid rgba(216,216,216,0.2);color:var(--white);width:32px;height:32px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;">✕</button>
+  </div>
+  <div id="cart-items" style="flex:1;overflow-y:auto;padding:20px;"></div>
+  <div style="padding:20px;border-top:1px solid rgba(201,168,76,0.15);">
+    <div id="cart-empty-msg" style="text-align:center;padding:20px;color:var(--white-dim);font-size:13px;">Nenhuma peça selecionada ainda.</div>
+    <div id="cart-footer" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div style="font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--silver-dim);">Total selecionado</div>
+        <div id="cart-total" style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--gold);"></div>
+      </div>
+      <button onclick="enviarCarrinho()" style="width:100%;background:linear-gradient(135deg,#25D366,#128C4A);border:none;padding:16px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:3px;color:white;cursor:pointer;margin-bottom:10px;">📲 ENVIAR PEDIDO NO WHATSAPP</button>
+      <button onclick="limparCarrinho()" style="width:100%;background:none;border:1px solid rgba(216,216,216,0.15);padding:12px;font-family:'Outfit',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--white-dim);cursor:pointer;">Limpar carrinho</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-line"></div>
+  <div class="hero-tag">Moda Masculina · Casual Social</div>
+  <h1 class="hero-title">IMPERIUM<br><span style="background:linear-gradient(135deg,#D8D8D8 0%,#F5F5F5 40%,#D8D8D8 60%,#B8B8B8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">WEAR</span></h1>
+  <div class="hero-subtitle">Vista quem você é</div>
+  <div class="hero-btns">
+    <a href="#colecao" class="btn-primary">Ver Coleção</a>
+    <a href="#contato" class="btn-secondary">Entrar em Contato</a>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</div>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="sobre-grid" style="opacity:1;transform:none;">
+    <div class="sobre-visual" style="opacity:1;transform:none;display:flex;align-items:center;justify-content:center;background:#0D0D0D;position:relative;overflow:hidden;min-height:400px;">
+      <!-- Background glow -->
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;height:300px;background:radial-gradient(circle,rgba(201,168,76,0.08) 0%,transparent 70%);pointer-events:none;"></div>
+      <!-- Gold top line -->
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#C9A84C,transparent);"></div>
+      <!-- Gold left line -->
+      <div style="position:absolute;top:0;left:0;bottom:0;width:2px;background:linear-gradient(180deg,#C9A84C,transparent);"></div>
+      <!-- Content -->
+      <div style="text-align:center;position:relative;z-index:1;padding:40px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:80px;letter-spacing:8px;color:rgba(201,168,76,0.12);line-height:1;margin-bottom:-20px;">IW</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:6px;color:#F5F5F0;line-height:1;margin-bottom:4px;">IMPERIUM</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:6px;color:#C9A84C;line-height:1;margin-bottom:24px;">WEAR</div>
+        <div style="width:40px;height:1px;background:linear-gradient(90deg,transparent,#C9A84C,transparent);margin:0 auto 20px;"></div>
+        <div style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:300;color:rgba(216,216,216,0.4);letter-spacing:4px;text-transform:uppercase;">Moda Masculina · 2026</div>
+      </div>
+    </div>
+    <div class="sobre-text">
+      <div class="section-tag">Sobre a loja</div>
+      <div class="divider"></div>
+      <h2 class="section-title">NOSSA <span style="color:var(--gold);">HISTÓRIA</span></h2>
+      <p>A <strong>Imperium Wear</strong> nasceu da crença de que o homem moderno merece roupas que combinem <strong>estilo e conforto</strong> sem abrir mão da personalidade.</p>
+      <p>Cada peça é selecionada com cuidado — do casual ao social — para que você esteja sempre no ponto certo, em qualquer ocasião.</p>
+      <div class="sobre-stats">
+        <div class="stat-item">
+          <div class="stat-num" id="stat-produtos">0</div>
+          <div class="stat-label">Produtos</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Estilo próprio</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COLEÇÃO -->
+<div class="colecao-wrap" id="colecao">
+  <div class="colecao-header reveal" style="padding:0 40px;max-width:900px;margin:0 auto 32px;display:flex;align-items:flex-end;justify-content:space-between;">
+    <div>
+      <div class="section-tag">Portfólio</div>
+      <h2 class="section-title" style="margin-bottom:0;">COLEÇÃO <span style="color:var(--gold);">ATUAL</span></h2>
+    </div>
+    <div style="font-size:12px;color:var(--white-dim);letter-spacing:1px;">4 peças disponíveis</div>
+  </div>
+  <div class="colecao-grid" id="colecaoGrid" style="display:grid;padding:0 40px;max-width:900px;margin:0 auto;">
+    <div class="produto-card reveal" style="cursor:pointer;" onclick="abrirProduto(0)">
+      <div class="produto-badge">Destaque</div>
+      <div class="produto-img-wrap">
+        <img class="produto-img-real" src="https://res.cloudinary.com/dq8cqyvwy/image/upload/v1775402393/3e681067-fd80-452f-a4a9-e0ddd8cc7266_bzomtr.jpg" alt="Parka Masculino" loading="lazy">
+      </div>
+      <div class="produto-info">
+        <div class="produto-nome">Parka Masculino</div>
+        <div class="produto-cat">Jaquetas</div>
+        <div class="produto-preco">R$ 689,90</div>
+      </div>
+    </div>
+    <div class="produto-card reveal" style="cursor:pointer;" onclick="abrirProduto(1)">
+      <div class="produto-badge">Novo</div>
+      <div class="produto-img-wrap">
+        <img class="produto-img-real" src="https://res.cloudinary.com/dq8cqyvwy/image/upload/v1775402349/2eaa6dee-d8df-4cde-8753-9d13a9eaf8ec_whqusq.jpg" alt="Blusa Texturizada" loading="lazy">
+      </div>
+      <div class="produto-info">
+        <div class="produto-nome">Blusa Texturizada</div>
+        <div class="produto-cat">Blusas</div>
+        <div class="produto-preco">R$ 299,90</div>
+      </div>
+    </div>
+    <div class="produto-card reveal" style="cursor:pointer;" onclick="abrirProduto(2)">
+      <div class="produto-img-wrap">
+        <img class="produto-img-real" src="https://res.cloudinary.com/dq8cqyvwy/image/upload/v1775402331/268361c6-175d-400f-9fd6-99b0453b0237_fbdc8w.jpg" alt="Camisa de Algodão com Elastano" loading="lazy">
+      </div>
+      <div class="produto-info">
+        <div class="produto-nome">Camisa de Algodão com Elastano</div>
+        <div class="produto-cat">Camisas</div>
+        <div class="produto-preco">R$ 299,90</div>
+      </div>
+    </div>
+    <div class="produto-card reveal" style="cursor:pointer;" onclick="abrirProduto(3)">
+      <div class="produto-badge">Novo</div>
+      <div class="produto-img-wrap">
+        <img class="produto-img-real" src="https://res.cloudinary.com/dq8cqyvwy/image/upload/v1775410879/8e29b2b1-7550-4dc6-aa03-d5d86f885e87_wffugb.jpg" alt="Blusa Henley Texturizada" loading="lazy">
+      </div>
+      <div class="produto-info">
+        <div class="produto-nome">Blusa Henley Texturizada</div>
+        <div class="produto-cat">Blusas</div>
+        <div class="produto-preco">R$ 319,90</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATALOGO DESTAQUE -->
+  <div style="padding:0 40px;margin-top:32px;opacity:1;transform:none;max-width:900px;margin-left:auto;margin-right:auto;">
+    <div style="background:#0D0D0D;border-top:1px solid rgba(201,168,76,0.15);padding:80px 40px;text-align:center;position:relative;overflow:hidden;">
+      
+      <!-- Glowing bg -->
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(201,168,76,0.07) 0%,transparent 70%);pointer-events:none;"></div>
+      
+      <!-- Top border gradient -->
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,#C9A84C 30%,#E2C97E 50%,#C9A84C 70%,transparent 100%);"></div>
+      
+      <!-- Tag -->
+      <div style="display:inline-block;border:1px solid rgba(201,168,76,0.3);padding:6px 18px;font-family:'Outfit',sans-serif;font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:4px;color:#C9A84C;margin-bottom:28px;">Catálogo Digital · 2026</div>
+      
+      <!-- Big title -->
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,96px);letter-spacing:8px;color:#F5F5F0;line-height:0.9;margin-bottom:6px;">VEJA TODAS</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,96px);letter-spacing:8px;color:#C9A84C;line-height:0.9;margin-bottom:32px;">AS PEÇAS</div>
+      
+      <!-- Divider -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:28px;">
+        <div style="width:60px;height:1px;background:linear-gradient(90deg,transparent,#C9A84C);"></div>
+        <div style="font-size:16px;">✦</div>
+        <div style="width:60px;height:1px;background:linear-gradient(270deg,transparent,#C9A84C);"></div>
+      </div>
+      
+      <!-- Description -->
+      <div style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:300;color:rgba(216,216,216,0.55);line-height:1.9;max-width:480px;margin:0 auto 48px;">
+        Jaquetas, camisas, blusas e muito mais.<br>Preços, cores e detalhes de cada peça no catálogo completo.
+      </div>
+      
+      <!-- Big CTA button -->
+      <a href="https://drive.google.com/file/d/1mlaX2_ZyCW5B1Ok4r1GLvT2ZQvpV7NwZ/view" target="_blank" 
+         style="display:inline-flex;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#C9A84C 0%,#E2C97E 50%,#C9A84C 100%);padding:22px 60px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:4px;color:#0A0A0A;text-decoration:none;box-shadow:0 0 40px rgba(201,168,76,0.25);transition:all 0.3s;"
+         onmouseover="this.style.boxShadow='0 0 60px rgba(201,168,76,0.45)';this.style.transform='translateY(-2px)'"
+         onmouseout="this.style.boxShadow='0 0 40px rgba(201,168,76,0.25)';this.style.transform='translateY(0)'">
+        <span style="font-size:20px;">📄</span>
+        ACESSAR CATÁLOGO COMPLETO
+      </a>
+      
+      <div style="margin-top:20px;font-size:11px;color:rgba(216,216,216,0.25);letter-spacing:2px;font-family:'Outfit',sans-serif;">
+        VISUALIZAÇÃO GRATUITA · PDF COMPLETO
+      </div>
+      
+    </div>
+  </div>
+
+</div>
+
+<!-- ADMIN -->
+<div class="admin-section">
+  <div class="admin-inner">
+    <div class="admin-toggle" onclick="toggleAdmin()">
+      <div class="admin-toggle-icon" id="adminIcon">⚙</div>
+      <div class="admin-toggle-label">Gerenciar Produtos</div>
+    </div>
+    <div class="admin-panel" id="adminPanel">
+      <div class="admin-title">ADICIONAR PRODUTO</div>
+      <div class="admin-form">
+        <div>
+          <label class="admin-label">Nome do produto *</label>
+          <input class="admin-input" id="p-nome" type="text" placeholder="Ex: Camisa Social Slim">
+        </div>
+        <div>
+          <label class="admin-label">Categoria</label>
+          <input class="admin-input" id="p-cat" type="text" placeholder="Ex: Camisas, Calças, Jaquetas...">
+        </div>
+        <div>
+          <label class="admin-label">Preço (R$)</label>
+          <input class="admin-input" id="p-preco" type="text" placeholder="Ex: 189,90">
+        </div>
+        <div>
+          <label class="admin-label">Destaque</label>
+          <select class="admin-input" id="p-badge">
+            <option value="">Nenhum</option>
+            <option value="Novo">Novo</option>
+            <option value="Destaque">Destaque</option>
+            <option value="Exclusivo">Exclusivo</option>
+          </select>
+        </div>
+        <div class="admin-form-full">
+          <label class="admin-label">Link da foto (Cloudinary ou qualquer URL de imagem)</label>
+          <input class="admin-input" id="p-foto-url" type="url" placeholder="Ex: https://res.cloudinary.com/seu-usuario/image/upload/foto.jpg" oninput="previewFotoUrl(this.value)">
+          <div id="foto-preview" style="margin-top:10px;display:none;align-items:center;gap:12px;">
+            <img id="foto-img" style="height:80px;width:64px;object-fit:cover;border:1px solid rgba(216,216,216,0.15);">
+            <div>
+              <div style="font-size:11px;color:var(--gold);margin-bottom:3px;">✓ Imagem encontrada</div>
+              <div style="font-size:10px;color:var(--silver-dim);">A foto aparecerá para todos os clientes</div>
+            </div>
+          </div>
+          <div style="margin-top:10px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);padding:12px 14px;">
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:6px;">Como usar o Cloudinary (gratuito)</div>
+            <div style="font-size:11px;color:var(--silver-dim);line-height:1.7;">
+              1. Acesse <strong style="color:var(--white);">cloudinary.com</strong> e crie uma conta grátis<br>
+              2. Faça upload da foto do produto<br>
+              3. Copie o link gerado e cole aqui acima
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="admin-btn" onclick="adicionarProduto()">ADICIONAR AO PORTFÓLIO</button>
+
+      <div class="admin-produtos-list" id="adminList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTATO -->
+<section id="contato">
+  <div class="contato-grid" style="opacity:1;transform:none;">
+    <div class="contato-text">
+      <div class="section-tag">Fale conosco</div>
+      <div class="divider"></div>
+      <h2 class="section-title">VAMOS <span style="color:var(--gold);">CONVERSAR</span></h2>
+      <p>Interessado em alguma peça ou quer saber mais sobre nossa coleção? Entre em contato pelo WhatsApp ou Instagram — respondemos rápido.</p>
+      <div class="contato-links">
+        <a href="https://wa.me/5551991279805" target="_blank" class="contato-link" id="whatsLink">
+          <div class="contato-link-icon">📲</div>
+          <div class="contato-link-info">
+            <div class="contato-link-label">WhatsApp</div>
+            <div class="contato-link-value">Chamar no WhatsApp</div>
+          </div>
+        </a>
+        <a href="https://instagram.com/lojaimperiumwear" target="_blank" class="contato-link">
+          <div class="contato-link-icon">📸</div>
+          <div class="contato-link-info">
+            <div class="contato-link-label">Instagram</div>
+            <div class="contato-link-value">@lojaimperiumwear</div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div>
+      <div style="background:var(--black-light);border:1px solid rgba(216,216,216,0.08);padding:40px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;margin-bottom:24px;">ENVIAR MENSAGEM</div>
+        <div style="margin-bottom:14px;">
+          <label class="admin-label">Seu nome</label>
+          <input class="admin-input" id="c-nome" type="text" placeholder="Como posso te chamar?">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label class="admin-label">Mensagem</label>
+          <textarea class="admin-input" id="c-msg" rows="4" placeholder="Olá! Tenho interesse em..." style="resize:vertical;"></textarea>
+        </div>
+        <button class="admin-btn" style="width:100%;" onclick="enviarWhats()">ENVIAR VIA WHATSAPP</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">IMPERIUM<span style="background:linear-gradient(135deg,#D8D8D8 0%,#F5F5F5 40%,#D8D8D8 60%,#B8B8B8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">WEAR</span></div>
+  <div class="footer-copy">© 2026 Imperium Wear · Todos os direitos reservados</div>
+</footer>
+
+<!-- MODAL PRODUTO -->
+<div id="produtoModal" onclick="fecharProdutoModal(event)" style="display:none;position:fixed;inset:0;background:rgba(10,10,10,0.92);z-index:300;align-items:flex-end;justify-content:center;">
+  <div id="produtoModalInner" style="background:#1A1A1A;border:1px solid rgba(201,168,76,0.2);border-radius:20px 20px 0 0;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.34,1.2,0.64,1);">
+    <div style="width:40px;height:4px;background:rgba(216,216,216,0.2);border-radius:2px;margin:16px auto 0;"></div>
+    <div id="produtoModalFoto" style="width:100%;aspect-ratio:3/4;overflow:hidden;position:relative;margin-top:16px;">
+      <img id="produtoModalImg" style="width:100%;height:100%;object-fit:cover;display:block;" src="" alt="">
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(10,10,10,0.8) 100%);"></div>
+    </div>
+    <div style="padding:20px 24px 40px;">
+      <div id="produtoModalBadge" style="background:var(--gold);color:#0A0A0A;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:2px;padding:3px 10px;display:none;margin-bottom:10px;"></div>
+      <div id="produtoModalNome" style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:#F5F5F0;margin-bottom:4px;"></div>
+      <div id="produtoModalCat" style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:rgba(216,216,216,0.5);margin-bottom:8px;"></div>
+      <div id="produtoModalPreco" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);margin-bottom:24px;"></div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <button id="btnAdicionarModal" style="width:100%;background:linear-gradient(135deg,#C9A84C,#A8842E);border:none;border-radius:10px;padding:16px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:3px;color:#0A0A0A;cursor:pointer;">🛒 ADICIONAR AO CARRINHO</button>
+        <button onclick="fecharModalDireto()" style="width:100%;background:none;border:1px solid rgba(216,216,216,0.15);border-radius:10px;padding:14px;font-family:'Outfit',sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:2px;color:rgba(216,216,216,0.6);cursor:pointer;">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+
+const PRODUTOS_PADRAO = [
+  {nome:'Parka Masculino',cat:'Jaquetas',preco:'689,90',badge:'Destaque',foto:'https://res.cloudinary.com/dq8cqyvwy/image/upload/v1775402393/3e681067-fd80-452f-a4a9-e0ddd8cc7266_bzomtr.jpg'},
+  {nome:'Blusa Texturizada',cat:'Blusas',preco:'299,90',badge:'Novo',foto:'https://res.cloudinary.com/dq8cqyvwy/image/upload/v1775402349/2eaa6dee-d8df-4cde-8753-9d13a9eaf8ec_whqusq.jpg'},
+  {nome:'Camisa de Algodão com Elastano',cat:'Camisas',preco:'299,90',badge:'',foto:'https://res.cloudinary.com/dq8cqyvwy/image/upload/v1775402331/268361c6-175d-400f-9fd6-99b0453b0237_fbdc8w.jpg'},
+  {nome:'Blusa Henley Texturizada',cat:'Blusas',preco:'319,90',badge:'Novo',foto:'https://res.cloudinary.com/dq8cqyvwy/image/upload/v1775410879/8e29b2b1-7550-4dc6-aa03-d5d86f885e87_wffugb.jpg'}
+];
+
+function abrirProduto(i) {
+  const p = PRODUTOS_PADRAO[i];
+  if (!p) return;
+  const modal = document.getElementById('produtoModal');
+  const inner = document.getElementById('produtoModalInner');
+  document.getElementById('produtoModalImg').src = p.foto||'';
+  document.getElementById('produtoModalFoto').style.display = p.foto?'block':'none';
+  document.getElementById('produtoModalNome').textContent = p.nome;
+  document.getElementById('produtoModalCat').textContent = p.cat||'Casual Social';
+  document.getElementById('produtoModalPreco').textContent = p.preco?'R$ '+p.preco:'';
+  const badge = document.getElementById('produtoModalBadge');
+  if(p.badge){badge.textContent=p.badge;badge.style.display='inline-block';}
+  else{badge.style.display='none';}
+  document.getElementById('btnAdicionarModal').onclick = () => { adicionarCarrinho(i); fecharModalDireto(); };
+  modal.style.display='flex';
+  requestAnimationFrame(()=>{inner.style.transform='translateY(0)';});
+}
+
+function fecharProdutoModal(e){
+  if(e.target===document.getElementById('produtoModal')) fecharModalDireto();
+}
+
+function fecharModalDireto(){
+  const inner=document.getElementById('produtoModalInner');
+  inner.style.transform='translateY(100%)';
+  setTimeout(()=>{document.getElementById('produtoModal').style.display='none';},350);
+}
+
+let carrinho=[];
+function adicionarCarrinho(i){
+  const p=PRODUTOS_PADRAO[i];
+  const ex=carrinho.find(c=>c.idx===i);
+  if(ex){ex.qty++;}else{carrinho.push({idx:i,nome:p.nome,cat:p.cat,preco:p.preco,foto:p.foto,qty:1});}
+  atualizarBadge();
+  showToast('"'+p.nome+'" adicionado ao carrinho! 🛒');
+  renderCarrinho();
+}
+
+// ── DATA ──
+const PRODUTOS_PADRAO = [
+  {
+    nome: 'Parka Masculino',
+    cat: 'Jaquetas',
+    preco: '689,90',
+    badge: 'Destaque',
+    foto: 'https://res.cloudinary.com/dq8cqyvwy/image/upload/v1775402393/3e681067-fd80-452f-a4a9-e0ddd8cc7266_bzomtr.jpg'
+  },
+  {
+    nome: 'Blusa Texturizada',
+    cat: 'Blusas',
+    preco: '299,90',
+    badge: 'Novo',
+    foto: 'https://res.cloudinary.com/dq8cqyvwy/image/upload/v1775402349/2eaa6dee-d8df-4cde-8753-9d13a9eaf8ec_whqusq.jpg'
+  },
+  {
+    nome: 'Camisa de Algodão com Elastano',
+    cat: 'Camisas',
+    preco: '299,90',
+    badge: '',
+    foto: 'https://res.cloudinary.com/dq8cqyvwy/image/upload/v1775402331/268361c6-175d-400f-9fd6-99b0453b0237_fbdc8w.jpg'
+  }
+];
+
+let produtosExtras = JSON.parse(localStorage.getItem('iw_produtos') || '[]');
+let produtos = [...PRODUTOS_PADRAO, ...produtosExtras];
+let whatsNum = localStorage.getItem('iw_whats') || '5551991279805';
+
+function saveProdutos() {
+  localStorage.setItem('iw_produtos', JSON.stringify(produtosExtras));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── RENDER PRODUTOS ──
+function renderProdutos() {
+  const grid = document.getElementById('colecaoGrid');
+  const empty = document.getElementById('colecao-empty');
+  const count = document.getElementById('colecao-count');
+  const statEl = document.getElementById('stat-produtos');
+
+  statEl.textContent = produtos.length;
+  count.textContent = produtos.length ? `${produtos.length} peça${produtos.length>1?'s':''} disponível${produtos.length>1?'is':''}` : '';
+
+  if (!produtos.length) {
+    grid.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+
+  grid.style.display = 'grid';
+  empty.style.display = 'none';
+
+  grid.innerHTML = produtos.map((p, i) => `
+    <div class="produto-card reveal" style="animation-delay:${i*0.08}s">
+      ${p.badge ? `<div class="produto-badge">${p.badge}</div>` : ''}
+      <div class="produto-img-wrap">
+        ${p.foto
+          ? `<img class="produto-img-real" src="${p.foto}" alt="${p.nome}">`
+          : `<div class="produto-img-placeholder"><div class="produto-placeholder-icon">IW</div></div>`
+        }
+        <div class="produto-overlay">
+          <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+            <button class="produto-overlay-btn" onclick="event.stopPropagation();adicionarCarrinho(${i})">+ Adicionar</button>
+            <button class="produto-overlay-btn" style="background:none;border:1px solid rgba(216,216,216,0.5);color:var(--white);" onclick="event.stopPropagation();consultarProduto(${i})">Consultar</button>
+          </div>
+        </div>
+      </div>
+      <div class="produto-info">
+        <div class="produto-nome">${p.nome}</div>
+        <div class="produto-cat">${p.cat||'Casual Social'}</div>
+        ${p.preco ? `<div class="produto-preco">R$ ${p.preco}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  observeReveal();
+}
+
+function renderAdminList() {
+  const el = document.getElementById('adminList');
+  if (!produtos.length) { el.innerHTML = ''; return; }
+  el.innerHTML = `<div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--silver-dim);margin-bottom:16px;">Produtos cadastrados (${produtos.length})</div>` +
+    produtos.map((p,i) => `
+    <div class="admin-produto-item">
+      <div class="admin-produto-thumb">
+        ${p.foto ? `<img src="${p.foto}">` : 'IW'}
+      </div>
+      <div class="admin-produto-info">
+        <div class="admin-produto-nome">${p.nome}</div>
+        <div class="admin-produto-meta">${p.cat||'—'} · ${p.preco ? 'R$ '+p.preco : 'Sem preço'}</div>
+      </div>
+      <button class="admin-produto-del" onclick="removerProduto(${i})">Remover</button>
+    </div>
+  `).join('');
+}
+
+// ── ADMIN ──
+function toggleAdmin() {
+  const panel = document.getElementById('adminPanel');
+  const icon = document.getElementById('adminIcon');
+
+  if (panel.classList.contains('open')) {
+    panel.classList.remove('open');
+    icon.textContent = '⚙';
+    return;
+  }
+
+  const senha = prompt('🔒 Digite a senha para acessar o painel:');
+  if (!senha) return;
+  if (senha !== 'imperium2025') {
+    alert('Senha incorreta!');
+    return;
+  }
+
+  panel.classList.add('open');
+  icon.textContent = '✕';
+  renderAdminList();
+}
+
+function previewFotoUrl(url) {
+  if (!url) { document.getElementById('foto-preview').style.display = 'none'; return; }
+  const img = document.getElementById('foto-img');
+  img.src = url;
+  img.onload = () => { document.getElementById('foto-preview').style.display = 'flex'; };
+  img.onerror = () => { document.getElementById('foto-preview').style.display = 'none'; };
+}
+
+function adicionarProduto() {
+  const nome = document.getElementById('p-nome').value.trim();
+  if (!nome) { showToast('Digite o nome do produto!'); return; }
+  const fotoUrl = document.getElementById('p-foto-url') ? document.getElementById('p-foto-url').value.trim() : null;
+  const produto = {
+    nome,
+    cat: document.getElementById('p-cat').value.trim(),
+    preco: document.getElementById('p-preco').value.trim(),
+    badge: document.getElementById('p-badge').value,
+    foto: fotoUrl || null
+  };
+  produtosExtras.push(produto);
+  produtos = [...PRODUTOS_PADRAO, ...produtosExtras];
+  saveProdutos();
+  renderProdutos();
+  renderAdminList();
+  ['p-nome','p-cat','p-preco'].forEach(id => document.getElementById(id).value = '');
+  if (document.getElementById('p-foto-url')) document.getElementById('p-foto-url').value = '';
+  document.getElementById('p-badge').value = '';
+  if (document.getElementById('foto-preview')) document.getElementById('foto-preview').style.display = 'none';
+  showToast(`"${nome}" adicionado ao portfólio! ✓`);
+}
+
+function removerProduto(i) {
+  if (!confirm('Remover este produto?')) return;
+  if (i < PRODUTOS_PADRAO.length) {
+    showToast('Não é possível remover produtos padrão.');
+    return;
+  }
+  produtosExtras.splice(i - PRODUTOS_PADRAO.length, 1);
+  produtos = [...PRODUTOS_PADRAO, ...produtosExtras];
+  saveProdutos();
+  renderProdutos();
+  renderAdminList();
+  showToast('Produto removido.');
+}
+
+function consultarProduto(i) {
+  const p = produtos[i];
+  const num = whatsNum.replace(/\D/g,'');
+  const msg = encodeURIComponent(`Olá! Vi o produto "${p.nome}" no portfólio da Imperium Wear e gostaria de mais informações.`);
+  window.open(`https://wa.me/${num}?text=${msg}`, '_blank');
+}
+
+function enviarWhats() {
+  const nome = document.getElementById('c-nome').value.trim();
+  const msg = document.getElementById('c-msg').value.trim();
+  if (!msg) { showToast('Digite uma mensagem!'); return; }
+  const num = whatsNum.replace(/\D/g,'');
+  const texto = nome ? `Olá! Sou ${nome}. ${msg}` : msg;
+  window.open(`https://wa.me/${num}?text=${encodeURIComponent(texto)}`, '_blank');
+}
+
+// ── SCROLL REVEAL ──
+function observeReveal() {
+  const els = document.querySelectorAll('.reveal:not(.visible)');
+  if (!els.length) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
+  els.forEach(el => {
+    obs.observe(el);
+    // Force check if already in viewport
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight) el.classList.add('visible');
+  });
+}
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  els.forEach(el => obs.observe(el));
+}
+
+// ── COUNTER ANIMATION ──
+function animateCounter(el, target, duration=1500) {
+  let start = 0;
+  const step = Math.ceil(target / (duration / 16));
+  const timer = setInterval(() => {
+    start = Math.min(start + step, target);
+    el.textContent = start;
+    if (start >= target) clearInterval(timer);
+  }, 16);
+}
+
+// ── CARRINHO ──
+let carrinho = [];
+
+function toggleCart() {
+  const panel = document.getElementById('cart-panel');
+  const overlay = document.getElementById('cart-overlay');
+  const isOpen = panel.style.right === '0px';
+  panel.style.right = isOpen ? '-420px' : '0px';
+  overlay.style.display = isOpen ? 'none' : 'block';
+  if (!isOpen) renderCarrinho();
+}
+
+function adicionarCarrinho(i) {
+  const p = produtos[i];
+  const existente = carrinho.find(c => c.idx === i);
+  if (existente) {
+    existente.qty++;
+  } else {
+    carrinho.push({ idx: i, nome: p.nome, cat: p.cat, preco: p.preco, foto: p.foto, qty: 1 });
+  }
+  atualizarBadge();
+  showToast(`"${p.nome}" adicionado ao carrinho! 🛒`);
+  renderCarrinho();
+}
+
+function atualizarBadge() {
+  const badge = document.getElementById('cart-badge');
+  const total = carrinho.reduce((a, c) => a + c.qty, 0);
+  badge.style.display = total > 0 ? 'flex' : 'none';
+  badge.textContent = total;
+}
+
+function renderCarrinho() {
+  const el = document.getElementById('cart-items');
+  const emptyMsg = document.getElementById('cart-empty-msg');
+  const footer = document.getElementById('cart-footer');
+  const totalEl = document.getElementById('cart-total');
+
+  if (!carrinho.length) {
+    el.innerHTML = '';
+    emptyMsg.style.display = 'block';
+    footer.style.display = 'none';
+    return;
+  }
+
+  emptyMsg.style.display = 'none';
+  footer.style.display = 'block';
+
+  el.innerHTML = carrinho.map((c, i) => `
+    <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid rgba(216,216,216,0.06);align-items:center;">
+      <div style="width:56px;height:70px;background:var(--black-mid);border:1px solid rgba(216,216,216,0.1);flex-shrink:0;overflow:hidden;">
+        ${c.foto ? `<img src="${c.foto}" style="width:100%;height:100%;object-fit:cover;">` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--silver-dim);">IW</div>`}
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:500;color:var(--white);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.nome}</div>
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--silver-dim);">${c.cat||'Casual Social'}</div>
+        ${c.preco ? `<div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);margin-top:4px;">R$ ${c.preco}</div>` : ''}
+        <div style="display:flex;align-items:center;gap:10px;margin-top:8px;">
+          <button onclick="mudarQty(${i},-1)" style="background:rgba(216,216,216,0.08);border:1px solid rgba(216,216,216,0.15);color:var(--white);width:26px;height:26px;cursor:pointer;font-size:14px;">−</button>
+          <span style="font-size:14px;font-weight:500;min-width:20px;text-align:center;">${c.qty}</span>
+          <button onclick="mudarQty(${i},1)" style="background:rgba(216,216,216,0.08);border:1px solid rgba(216,216,216,0.15);color:var(--white);width:26px;height:26px;cursor:pointer;font-size:14px;">+</button>
+        </div>
+      </div>
+      <button onclick="removerDoCarrinho(${i})" style="background:none;border:none;color:rgba(220,100,100,0.6);cursor:pointer;font-size:18px;padding:4px;">✕</button>
+    </div>
+  `).join('');
+
+  // Total
+  const totalValor = carrinho.reduce((acc, c) => {
+    const v = parseFloat((c.preco||'0').replace(',','.'));
+    return acc + (isNaN(v) ? 0 : v * c.qty);
+  }, 0);
+  totalEl.textContent = totalValor > 0 ? `R$ ${totalValor.toFixed(2).replace('.',',')}` : `${carrinho.reduce((a,c)=>a+c.qty,0)} peça(s)`;
+}
+
+function mudarQty(i, delta) {
+  carrinho[i].qty += delta;
+  if (carrinho[i].qty <= 0) carrinho.splice(i, 1);
+  atualizarBadge();
+  renderCarrinho();
+}
+
+function removerDoCarrinho(i) {
+  carrinho.splice(i, 1);
+  atualizarBadge();
+  renderCarrinho();
+}
+
+function limparCarrinho() {
+  carrinho = [];
+  atualizarBadge();
+  renderCarrinho();
+}
+
+function enviarCarrinho() {
+  if (!carrinho.length) return;
+  const lista = carrinho.map(c =>
+    `• ${c.nome}${c.cat ? ` (${c.cat})` : ''}${c.preco ? ` - R$ ${c.preco}` : ''} x${c.qty}`
+  ).join('\n');
+  const totalValor = carrinho.reduce((acc, c) => {
+    const v = parseFloat((c.preco||'0').replace(',','.'));
+    return acc + (isNaN(v) ? 0 : v * c.qty);
+  }, 0);
+  const totalTxt = totalValor > 0 ? `\n\n💰 Total: R$ ${totalValor.toFixed(2).replace('.',',')}` : '';
+  const msg = encodeURIComponent(`Olá! Tenho interesse nas seguintes peças da Imperium Wear:\n\n${lista}${totalTxt}\n\nPoderia me passar mais informações? 😊`);
+  window.open(`https://wa.me/5551991279805?text=${msg}`, '_blank');
+}
+observeReveal();
+
+// Animate counter when visible
+const statObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      animateCounter(document.getElementById('stat-produtos'), produtos.length);
+      statObs.disconnect();
+    }
+  });
+}, { threshold: 0.5 });
+const statEl = document.getElementById('stat-produtos');
+if (statEl) statObs.observe(statEl);
+</script>
+</body>
+</html>
