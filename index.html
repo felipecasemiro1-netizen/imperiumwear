@@ -975,7 +975,7 @@ let whatsNum = '5551991279805';
 
 async function carregarProdutos() {
   try {
-    const snap = await db.collection('produtos').orderBy('ordem').get();
+    const snap = await db.collection('produtos').get();
     produtos = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   } catch(e) {
     console.error('Erro ao carregar produtos:', e);
@@ -995,21 +995,16 @@ function showToast(msg) {
 // ── RENDER PRODUTOS ──
 function renderProdutos() {
   const grid = document.getElementById('colecaoGrid');
-  const empty = document.getElementById('colecao-empty');
-  const count = document.getElementById('colecao-count');
   const statEl = document.getElementById('stat-produtos');
 
-  statEl.textContent = produtos.length;
-  count.textContent = produtos.length ? `${produtos.length} peça${produtos.length>1?'s':''} disponível${produtos.length>1?'is':''}` : '';
+  if (statEl) statEl.textContent = produtos.length;
 
   if (!produtos.length) {
-    grid.style.display = 'none';
-    empty.style.display = 'block';
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--silver-dim);font-size:13px;">Nenhum produto cadastrado ainda.</div>';
     return;
   }
 
   grid.style.display = 'grid';
-  empty.style.display = 'none';
 
   grid.innerHTML = produtos.map((p, i) => `
     <div class="produto-card reveal" style="animation-delay:${i*0.08}s">
