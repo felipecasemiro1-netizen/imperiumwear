@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IMPERIUM WEAR</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <style>
 :root {
   --black: #0A0A0A;
@@ -189,7 +191,7 @@ nav {
 }
 
 /* ── SECTION ── */
-section { padding: 60px 40px; max-width: 1200px; margin: 0 auto; scroll-margin-top: 80px; }
+section { padding: 60px 40px; max-width: 1200px; margin: 0 auto; }
 
 .section-tag {
   font-size: 10px; text-transform: uppercase; letter-spacing: 4px;
@@ -282,8 +284,8 @@ section { padding: 60px 40px; max-width: 1200px; margin: 0 auto; scroll-margin-t
 .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--white-dim); margin-top: 4px; }
 
 /* ── COLEÇÃO ── */
-.colecao-wrap { padding: 40px 0; scroll-margin-top: 80px; }
-.colecao-header { padding: 0 40px; max-width: 900px; margin: 0 auto 48px; display:flex; align-items:flex-end; justify-content:space-between; }
+.colecao-wrap { padding: 40px 0; scroll-margin-top: 70px; }
+.colecao-header { padding: 0 40px; max-width: 900px; margin: 0 auto 32px; display:flex; align-items:flex-end; justify-content:space-between; }
 
 .colecao-grid {
   display: grid;
@@ -558,10 +560,39 @@ footer {
 }
 .toast.show { transform: translateY(0); opacity: 1; }
 
+/* ── HAMBURGER ── */
+.nav-hamburger {
+  display: none;
+  background: none; border: none;
+  color: var(--white); font-size: 22px;
+  cursor: pointer; padding: 4px 8px;
+  line-height: 1;
+}
+.mobile-menu {
+  display: none;
+  position: fixed; top: 60px; left: 0; right: 0;
+  background: rgba(10,10,10,0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+  flex-direction: column;
+  z-index: 99;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  padding: 18px 24px;
+  font-size: 12px; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--white-dim); text-decoration: none;
+  border-bottom: 1px solid rgba(216,216,216,0.06);
+  transition: color 0.2s;
+}
+.mobile-menu a:hover { color: var(--gold); }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   nav { padding: 16px 20px; }
   .nav-links { display: none; }
+  .nav-hamburger { display: block; }
+  .nav-cta-desktop { display: none; }
   section { padding: 60px 20px; }
   .sobre-grid, .contato-grid { grid-template-columns: 1fr; gap: 40px; }
   .colecao-grid { grid-template-columns: repeat(2, 1fr); padding: 0 20px; }
@@ -588,9 +619,17 @@ footer {
       <span style="font-size:22px;">🛒</span>
       <span id="cart-badge" style="display:none;position:absolute;top:-4px;right:-4px;background:var(--gold);color:var(--black);font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;">0</span>
     </button>
-    <a href="#contato" class="nav-cta">Fale Conosco</a>
+    <a href="#contato" class="nav-cta nav-cta-desktop">Fale Conosco</a>
+    <button class="nav-hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()">☰</button>
   </div>
 </nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#sobre" onclick="toggleMobileMenu()">Sobre</a>
+  <a href="#colecao" onclick="toggleMobileMenu()">Coleção</a>
+  <a href="#contato" onclick="toggleMobileMenu()">Contato</a>
+  <a href="#contato" onclick="toggleMobileMenu()" style="color:var(--gold);">Fale Conosco</a>
+</div>
 
 <!-- CARRINHO LATERAL -->
 <div id="cart-overlay" onclick="toggleCart()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:300;"></div>
@@ -721,50 +760,6 @@ footer {
     </div>
   </div>
 
-  <!-- CATALOGO DESTAQUE -->
-  <div style="padding:0 40px;margin-top:32px;opacity:1;transform:none;max-width:900px;margin-left:auto;margin-right:auto;">
-    <div style="background:#0D0D0D;border-top:1px solid rgba(201,168,76,0.15);padding:80px 40px;text-align:center;position:relative;overflow:hidden;">
-      
-      <!-- Glowing bg -->
-      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(201,168,76,0.07) 0%,transparent 70%);pointer-events:none;"></div>
-      
-      <!-- Top border gradient -->
-      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,#C9A84C 30%,#E2C97E 50%,#C9A84C 70%,transparent 100%);"></div>
-      
-      <!-- Tag -->
-      <div style="display:inline-block;border:1px solid rgba(201,168,76,0.3);padding:6px 18px;font-family:'Outfit',sans-serif;font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:4px;color:#C9A84C;margin-bottom:28px;">Catálogo Digital · 2026</div>
-      
-      <!-- Big title -->
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,96px);letter-spacing:8px;color:#F5F5F0;line-height:0.9;margin-bottom:6px;">VEJA TODAS</div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,96px);letter-spacing:8px;color:#C9A84C;line-height:0.9;margin-bottom:32px;">AS PEÇAS</div>
-      
-      <!-- Divider -->
-      <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:28px;">
-        <div style="width:60px;height:1px;background:linear-gradient(90deg,transparent,#C9A84C);"></div>
-        <div style="font-size:16px;">✦</div>
-        <div style="width:60px;height:1px;background:linear-gradient(270deg,transparent,#C9A84C);"></div>
-      </div>
-      
-      <!-- Description -->
-      <div style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:300;color:rgba(216,216,216,0.55);line-height:1.9;max-width:480px;margin:0 auto 48px;">
-        Jaquetas, camisas, blusas e muito mais.<br>Preços, cores e detalhes de cada peça no catálogo completo.
-      </div>
-      
-      <!-- Big CTA button -->
-      <a href="https://drive.google.com/file/d/1mlaX2_ZyCW5B1Ok4r1GLvT2ZQvpV7NwZ/view" target="_blank" 
-         style="display:inline-flex;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#C9A84C 0%,#E2C97E 50%,#C9A84C 100%);padding:22px 60px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:4px;color:#0A0A0A;text-decoration:none;box-shadow:0 0 40px rgba(201,168,76,0.25);transition:all 0.3s;"
-         onmouseover="this.style.boxShadow='0 0 60px rgba(201,168,76,0.45)';this.style.transform='translateY(-2px)'"
-         onmouseout="this.style.boxShadow='0 0 40px rgba(201,168,76,0.25)';this.style.transform='translateY(0)'">
-        <span style="font-size:20px;">📄</span>
-        ACESSAR CATÁLOGO COMPLETO
-      </a>
-      
-      <div style="margin-top:20px;font-size:11px;color:rgba(216,216,216,0.25);letter-spacing:2px;font-family:'Outfit',sans-serif;">
-        VISUALIZAÇÃO GRATUITA · PDF COMPLETO
-      </div>
-      
-    </div>
-  </div>
 
 </div>
 
@@ -791,6 +786,14 @@ footer {
           <input class="admin-input" id="p-preco" type="text" placeholder="Ex: 189,90">
         </div>
         <div>
+          <label class="admin-label">Tamanhos disponíveis</label>
+          <input class="admin-input" id="p-tamanhos" type="text" placeholder="Ex: P, M, G, GG">
+        </div>
+        <div>
+          <label class="admin-label">Cores disponíveis</label>
+          <input class="admin-input" id="p-cores" type="text" placeholder="Ex: Preto, Branco, Azul">
+        </div>
+        <div>
           <label class="admin-label">Destaque</label>
           <select class="admin-input" id="p-badge">
             <option value="">Nenhum</option>
@@ -800,21 +803,20 @@ footer {
           </select>
         </div>
         <div class="admin-form-full">
-          <label class="admin-label">Link da foto (Cloudinary ou qualquer URL de imagem)</label>
-          <input class="admin-input" id="p-foto-url" type="url" placeholder="Ex: https://res.cloudinary.com/seu-usuario/image/upload/foto.jpg" oninput="previewFotoUrl(this.value)">
-          <div id="foto-preview" style="margin-top:10px;display:none;align-items:center;gap:12px;">
-            <img id="foto-img" style="height:80px;width:64px;object-fit:cover;border:1px solid rgba(216,216,216,0.15);">
-            <div>
-              <div style="font-size:11px;color:var(--gold);margin-bottom:3px;">✓ Imagem encontrada</div>
-              <div style="font-size:10px;color:var(--silver-dim);">A foto aparecerá para todos os clientes</div>
+          <label class="admin-label">Foto do produto</label>
+          <input type="file" id="p-foto-file" accept="image/*" style="display:none;" onchange="previewFotoLocal(this)">
+          <div onclick="document.getElementById('p-foto-file').click()"
+               style="border:1px dashed rgba(216,216,216,0.2);padding:28px 20px;text-align:center;cursor:pointer;border-radius:2px;transition:border-color 0.2s;"
+               onmouseover="this.style.borderColor='rgba(201,168,76,0.5)'" onmouseout="this.style.borderColor='rgba(216,216,216,0.2)'">
+            <div id="foto-placeholder">
+              <div style="font-size:28px;margin-bottom:8px;">📷</div>
+              <div style="font-size:12px;color:var(--silver-dim);">Clique para escolher uma foto</div>
+              <div style="font-size:10px;color:var(--white-dim);margin-top:4px;">JPG, PNG ou WEBP</div>
             </div>
-          </div>
-          <div style="margin-top:10px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);padding:12px 14px;">
-            <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:6px;">Como usar o Cloudinary (gratuito)</div>
-            <div style="font-size:11px;color:var(--silver-dim);line-height:1.7;">
-              1. Acesse <strong style="color:var(--white);">cloudinary.com</strong> e crie uma conta grátis<br>
-              2. Faça upload da foto do produto<br>
-              3. Copie o link gerado e cole aqui acima
+            <div id="foto-preview" style="display:none;">
+              <img id="foto-img" style="height:120px;width:90px;object-fit:cover;margin:0 auto;display:block;border:1px solid rgba(216,216,216,0.15);">
+              <div style="font-size:11px;color:var(--gold);margin-top:10px;">✓ Foto selecionada — será enviada ao salvar</div>
+              <div style="font-size:10px;color:var(--silver-dim);margin-top:4px;">Clique para trocar</div>
             </div>
           </div>
         </div>
@@ -886,7 +888,15 @@ footer {
       <div id="produtoModalBadge" style="background:var(--gold);color:#0A0A0A;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:2px;padding:3px 10px;display:none;margin-bottom:10px;"></div>
       <div id="produtoModalNome" style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:#F5F5F0;margin-bottom:4px;"></div>
       <div id="produtoModalCat" style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:rgba(216,216,216,0.5);margin-bottom:8px;"></div>
-      <div id="produtoModalPreco" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);margin-bottom:24px;"></div>
+      <div id="produtoModalPreco" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);margin-bottom:16px;"></div>
+      <div id="produtoModalTamanhos" style="display:none;margin-bottom:14px;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:rgba(216,216,216,0.5);margin-bottom:8px;">Tamanhos</div>
+        <div id="produtoModalTamLista" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+      </div>
+      <div id="produtoModalCores" style="display:none;margin-bottom:20px;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:rgba(216,216,216,0.5);margin-bottom:8px;">Cores</div>
+        <div id="produtoModalCoresLista" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+      </div>
       <div style="display:flex;flex-direction:column;gap:10px;">
         <button id="btnAdicionarModal" style="width:100%;background:linear-gradient(135deg,#C9A84C,#A8842E);border:none;border-radius:10px;padding:16px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:3px;color:#0A0A0A;cursor:pointer;">🛒 ADICIONAR AO CARRINHO</button>
         <button onclick="fecharModalDireto()" style="width:100%;background:none;border:1px solid rgba(216,216,216,0.15);border-radius:10px;padding:14px;font-family:'Outfit',sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:2px;color:rgba(216,216,216,0.6);cursor:pointer;">Fechar</button>
@@ -900,15 +910,15 @@ footer {
 
 <script>
 
-const PRODUTOS_PADRAO = [
-  {nome:'Parka Masculino',cat:'Jaquetas',preco:'689,90',badge:'Destaque',foto:'https://res.cloudinary.com/dq8cqyvwy/image/upload/v1775402393/3e681067-fd80-452f-a4a9-e0ddd8cc7266_bzomtr.jpg'},
-  {nome:'Blusa Texturizada',cat:'Blusas',preco:'299,90',badge:'Novo',foto:'https://res.cloudinary.com/dq8cqyvwy/image/upload/v1775402349/2eaa6dee-d8df-4cde-8753-9d13a9eaf8ec_whqusq.jpg'},
-  {nome:'Camisa de Algodão com Elastano',cat:'Camisas',preco:'299,90',badge:'',foto:'https://res.cloudinary.com/dq8cqyvwy/image/upload/v1775402331/268361c6-175d-400f-9fd6-99b0453b0237_fbdc8w.jpg'},
-  {nome:'Blusa Henley Texturizada',cat:'Blusas',preco:'319,90',badge:'Novo',foto:'https://res.cloudinary.com/dq8cqyvwy/image/upload/v1775410879/8e29b2b1-7550-4dc6-aa03-d5d86f885e87_wffugb.jpg'}
-];
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('hamburgerBtn');
+  menu.classList.toggle('open');
+  btn.textContent = menu.classList.contains('open') ? '✕' : '☰';
+}
 
 function abrirProduto(i) {
-  const p = PRODUTOS_PADRAO[i];
+  const p = produtos[i];
   if (!p) return;
   const modal = document.getElementById('produtoModal');
   const inner = document.getElementById('produtoModalInner');
@@ -917,6 +927,18 @@ function abrirProduto(i) {
   document.getElementById('produtoModalNome').textContent = p.nome;
   document.getElementById('produtoModalCat').textContent = p.cat||'Casual Social';
   document.getElementById('produtoModalPreco').textContent = p.preco?'R$ '+p.preco:'';
+  const tamDiv = document.getElementById('produtoModalTamanhos');
+  const tamLista = document.getElementById('produtoModalTamLista');
+  if (p.tamanhos && p.tamanhos.length) {
+    tamDiv.style.display = 'block';
+    tamLista.innerHTML = p.tamanhos.map(t => `<span style="border:1px solid rgba(216,216,216,0.3);padding:5px 12px;font-size:12px;letter-spacing:1px;">${t}</span>`).join('');
+  } else { tamDiv.style.display = 'none'; }
+  const coresDiv = document.getElementById('produtoModalCores');
+  const coresLista = document.getElementById('produtoModalCoresLista');
+  if (p.cores && p.cores.length) {
+    coresDiv.style.display = 'block';
+    coresLista.innerHTML = p.cores.map(c => `<span style="border:1px solid rgba(216,216,216,0.3);padding:5px 12px;font-size:12px;letter-spacing:1px;">${c}</span>`).join('');
+  } else { coresDiv.style.display = 'none'; }
   const badge = document.getElementById('produtoModalBadge');
   if(p.badge){badge.textContent=p.badge;badge.style.display='inline-block';}
   else{badge.style.display='none';}
@@ -935,47 +957,32 @@ function fecharModalDireto(){
   setTimeout(()=>{document.getElementById('produtoModal').style.display='none';},350);
 }
 
-let carrinho=[];
-function adicionarCarrinho(i){
-  const p=PRODUTOS_PADRAO[i];
-  const ex=carrinho.find(c=>c.idx===i);
-  if(ex){ex.qty++;}else{carrinho.push({idx:i,nome:p.nome,cat:p.cat,preco:p.preco,foto:p.foto,qty:1});}
-  atualizarBadge();
-  showToast('"'+p.nome+'" adicionado ao carrinho! 🛒');
-  renderCarrinho();
-}
+// ── FIREBASE ──
+const firebaseConfig = {
+  apiKey: "AIzaSyAeFlKLXdghz0RQKW2FcfryI21_C9FvvDo",
+  authDomain: "imperium-wear.firebaseapp.com",
+  projectId: "imperium-wear",
+  storageBucket: "imperium-wear.firebasestorage.app",
+  messagingSenderId: "703048619665",
+  appId: "1:703048619665:web:aa2f72c140b5b18179d130"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 // ── DATA ──
-const PRODUTOS_PADRAO = [
-  {
-    nome: 'Parka Masculino',
-    cat: 'Jaquetas',
-    preco: '689,90',
-    badge: 'Destaque',
-    foto: 'https://res.cloudinary.com/dq8cqyvwy/image/upload/v1775402393/3e681067-fd80-452f-a4a9-e0ddd8cc7266_bzomtr.jpg'
-  },
-  {
-    nome: 'Blusa Texturizada',
-    cat: 'Blusas',
-    preco: '299,90',
-    badge: 'Novo',
-    foto: 'https://res.cloudinary.com/dq8cqyvwy/image/upload/v1775402349/2eaa6dee-d8df-4cde-8753-9d13a9eaf8ec_whqusq.jpg'
-  },
-  {
-    nome: 'Camisa de Algodão com Elastano',
-    cat: 'Camisas',
-    preco: '299,90',
-    badge: '',
-    foto: 'https://res.cloudinary.com/dq8cqyvwy/image/upload/v1775402331/268361c6-175d-400f-9fd6-99b0453b0237_fbdc8w.jpg'
+let produtos = [];
+let whatsNum = '5551991279805';
+
+async function carregarProdutos() {
+  try {
+    const snap = await db.collection('produtos').orderBy('ordem').get();
+    produtos = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  } catch(e) {
+    console.error('Erro ao carregar produtos:', e);
+    produtos = [];
   }
-];
-
-let produtosExtras = JSON.parse(localStorage.getItem('iw_produtos') || '[]');
-let produtos = [...PRODUTOS_PADRAO, ...produtosExtras];
-let whatsNum = localStorage.getItem('iw_whats') || '5551991279805';
-
-function saveProdutos() {
-  localStorage.setItem('iw_produtos', JSON.stringify(produtosExtras));
+  renderProdutos();
+  renderAdminList();
 }
 
 function showToast(msg) {
@@ -1032,18 +1039,18 @@ function renderProdutos() {
 
 function renderAdminList() {
   const el = document.getElementById('adminList');
-  if (!produtos.length) { el.innerHTML = ''; return; }
+  if (!produtos.length) { el.innerHTML = '<div style="font-size:12px;color:var(--silver-dim);padding:16px 0;">Nenhum produto cadastrado ainda.</div>'; return; }
   el.innerHTML = `<div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--silver-dim);margin-bottom:16px;">Produtos cadastrados (${produtos.length})</div>` +
-    produtos.map((p,i) => `
+    produtos.map((p) => `
     <div class="admin-produto-item">
       <div class="admin-produto-thumb">
         ${p.foto ? `<img src="${p.foto}">` : 'IW'}
       </div>
       <div class="admin-produto-info">
         <div class="admin-produto-nome">${p.nome}</div>
-        <div class="admin-produto-meta">${p.cat||'—'} · ${p.preco ? 'R$ '+p.preco : 'Sem preço'}</div>
+        <div class="admin-produto-meta">${p.cat||'—'} · ${p.preco ? 'R$ '+p.preco : 'Sem preço'}${p.tamanhos?.length ? ' · '+p.tamanhos.join(', ') : ''}${p.cores?.length ? ' · '+p.cores.join(', ') : ''}</div>
       </div>
-      <button class="admin-produto-del" onclick="removerProduto(${i})">Remover</button>
+      <button class="admin-produto-del" onclick="removerProduto('${p.id}')">Remover</button>
     </div>
   `).join('');
 }
@@ -1071,49 +1078,85 @@ function toggleAdmin() {
   renderAdminList();
 }
 
-function previewFotoUrl(url) {
-  if (!url) { document.getElementById('foto-preview').style.display = 'none'; return; }
-  const img = document.getElementById('foto-img');
-  img.src = url;
-  img.onload = () => { document.getElementById('foto-preview').style.display = 'flex'; };
-  img.onerror = () => { document.getElementById('foto-preview').style.display = 'none'; };
+function previewFotoLocal(input) {
+  if (!input.files || !input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    document.getElementById('foto-img').src = e.target.result;
+    document.getElementById('foto-preview').style.display = 'block';
+    document.getElementById('foto-placeholder').style.display = 'none';
+  };
+  reader.readAsDataURL(input.files[0]);
 }
 
-function adicionarProduto() {
+async function uploadFotoCloudinary(file) {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', 'ml_default');
+  const res = await fetch('https://api.cloudinary.com/v1_1/dq8cqyvwy/image/upload', {
+    method: 'POST',
+    body: formData
+  });
+  const data = await res.json();
+  if (!data.secure_url) throw new Error('Upload falhou: ' + JSON.stringify(data));
+  return data.secure_url;
+}
+
+async function adicionarProduto() {
   const nome = document.getElementById('p-nome').value.trim();
   if (!nome) { showToast('Digite o nome do produto!'); return; }
-  const fotoUrl = document.getElementById('p-foto-url') ? document.getElementById('p-foto-url').value.trim() : null;
+
+  let fotoUrl = '';
+  const fileInput = document.getElementById('p-foto-file');
+  if (fileInput.files && fileInput.files[0]) {
+    try {
+      showToast('Enviando foto...');
+      fotoUrl = await uploadFotoCloudinary(fileInput.files[0]);
+    } catch(e) {
+      console.error(e);
+      showToast('Erro ao enviar foto. Tente novamente.');
+      return;
+    }
+  }
+
+  const tamanhosRaw = document.getElementById('p-tamanhos').value.trim();
+  const coresRaw = document.getElementById('p-cores').value.trim();
   const produto = {
     nome,
     cat: document.getElementById('p-cat').value.trim(),
     preco: document.getElementById('p-preco').value.trim(),
     badge: document.getElementById('p-badge').value,
-    foto: fotoUrl || null
+    foto: fotoUrl,
+    tamanhos: tamanhosRaw ? tamanhosRaw.split(',').map(t => t.trim()).filter(Boolean) : [],
+    cores: coresRaw ? coresRaw.split(',').map(c => c.trim()).filter(Boolean) : [],
+    ordem: Date.now()
   };
-  produtosExtras.push(produto);
-  produtos = [...PRODUTOS_PADRAO, ...produtosExtras];
-  saveProdutos();
-  renderProdutos();
-  renderAdminList();
-  ['p-nome','p-cat','p-preco'].forEach(id => document.getElementById(id).value = '');
-  if (document.getElementById('p-foto-url')) document.getElementById('p-foto-url').value = '';
-  document.getElementById('p-badge').value = '';
-  if (document.getElementById('foto-preview')) document.getElementById('foto-preview').style.display = 'none';
-  showToast(`"${nome}" adicionado ao portfólio! ✓`);
+  try {
+    showToast('Salvando produto...');
+    await db.collection('produtos').add(produto);
+    await carregarProdutos();
+    ['p-nome','p-cat','p-preco','p-tamanhos','p-cores'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('p-badge').value = '';
+    document.getElementById('p-foto-file').value = '';
+    document.getElementById('foto-preview').style.display = 'none';
+    document.getElementById('foto-placeholder').style.display = 'block';
+    showToast(`"${nome}" adicionado com sucesso! ✓`);
+  } catch(e) {
+    console.error(e);
+    showToast('Erro ao salvar. Verifique as regras do Firestore.');
+  }
 }
 
-function removerProduto(i) {
+async function removerProduto(id) {
   if (!confirm('Remover este produto?')) return;
-  if (i < PRODUTOS_PADRAO.length) {
-    showToast('Não é possível remover produtos padrão.');
-    return;
+  try {
+    await db.collection('produtos').doc(id).delete();
+    await carregarProdutos();
+    showToast('Produto removido.');
+  } catch(e) {
+    console.error(e);
+    showToast('Erro ao remover.');
   }
-  produtosExtras.splice(i - PRODUTOS_PADRAO.length, 1);
-  produtos = [...PRODUTOS_PADRAO, ...produtosExtras];
-  saveProdutos();
-  renderProdutos();
-  renderAdminList();
-  showToast('Produto removido.');
 }
 
 function consultarProduto(i) {
@@ -1147,16 +1190,6 @@ function observeReveal() {
     const rect = el.getBoundingClientRect();
     if (rect.top < window.innerHeight) el.classList.add('visible');
   });
-}
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 60);
-        obs.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  els.forEach(el => obs.observe(el));
 }
 
 // ── COUNTER ANIMATION ──
@@ -1277,7 +1310,15 @@ function enviarCarrinho() {
   const msg = encodeURIComponent(`Olá! Tenho interesse nas seguintes peças da Imperium Wear:\n\n${lista}${totalTxt}\n\nPoderia me passar mais informações? 😊`);
   window.open(`https://wa.me/5551991279805?text=${msg}`, '_blank');
 }
-observeReveal();
+document.addEventListener('DOMContentLoaded', function() {
+  carregarProdutos();
+  observeReveal();
+  setTimeout(function() {
+    document.querySelectorAll('.reveal').forEach(function(el) {
+      el.classList.add('visible');
+    });
+  }, 300);
+});
 
 // Animate counter when visible
 const statObs = new IntersectionObserver(entries => {
