@@ -574,7 +574,7 @@ footer {
 
 /* ── MODAL ── */
 .modal-overlay {
-  position: fixed; inset: 0; z-index: 800;
+  position: fixed; inset: 0; z-index: 1000;
   background: rgba(0,0,0,0.88);
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
@@ -821,6 +821,24 @@ footer {
       <div class="admin-toggle-label">Gerenciar Produtos</div>
     </div>
     <div class="admin-panel" id="adminPanel">
+
+      <!-- SETUP FIREBASE -->
+      <div id="fb-setup" style="display:none;margin-bottom:32px;padding:24px;border:1px solid rgba(201,168,76,0.25);background:rgba(201,168,76,0.04);">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:var(--gold);margin-bottom:12px;">⚠ CONECTAR BANCO DE DADOS</div>
+        <p style="font-size:13px;color:var(--white-dim);line-height:1.8;margin-bottom:16px;">
+          Para os produtos aparecerem para <strong style="color:var(--white);">todos os visitantes</strong> (Instagram, celular, qualquer navegador), conecte um banco de dados gratuito <strong style="color:var(--white);">uma única vez</strong>:<br><br>
+          <strong style="color:var(--gold);">1.</strong> Acesse <strong style="color:var(--white);">console.firebase.google.com</strong> com sua conta Google<br>
+          <strong style="color:var(--gold);">2.</strong> "Adicionar projeto" → dê um nome → desative Analytics → "Criar projeto"<br>
+          <strong style="color:var(--gold);">3.</strong> No menu lateral: <strong style="color:var(--white);">Realtime Database</strong> → "Criar banco de dados" → "Modo de teste" → "Ativar"<br>
+          <strong style="color:var(--gold);">4.</strong> Clique na engrenagem ⚙ → "Configurações do projeto" → role até <strong style="color:var(--white);">"Seus apps"</strong> → clique em <strong style="color:var(--white);">&lt;/&gt;</strong> → registre → copie o bloco <code style="color:var(--gold);">firebaseConfig = { ... }</code><br>
+          <strong style="color:var(--gold);">5.</strong> Cole abaixo só o conteúdo entre as chaves <code style="color:var(--gold);">{ }</code><br><br>
+          <strong style="color:var(--gold);">⚠ Importante:</strong> No Firebase, vá em <strong style="color:var(--white);">Realtime Database → Regras</strong> e substitua o conteúdo por: <code style="color:var(--gold);">{"rules":{".read":true,".write":true}}</code> e clique em <strong style="color:var(--white);">Publicar</strong>. Isso evita o bloqueio após 30 dias.
+        </p>
+        <label class="admin-label">Código do Firebase</label>
+        <textarea class="admin-input" id="fb-config-input" rows="6" placeholder='{"apiKey":"...","authDomain":"...","databaseURL":"https://seu-projeto-default-rtdb.firebaseio.com","projectId":"...","storageBucket":"...","messagingSenderId":"...","appId":"..."}'></textarea>
+        <button class="admin-btn" style="margin-top:12px;" onclick="configurarFirebase()">CONECTAR AGORA</button>
+      </div>
+
       <div class="admin-title">ADICIONAR PRODUTO</div>
       <div class="admin-form">
         <div>
@@ -863,10 +881,10 @@ footer {
         <div class="admin-form-full">
           <label class="admin-label">Foto do produto</label>
           <label class="admin-input-file" for="p-foto">
-            📷 Clique para selecionar uma foto
+            📷 Clique para selecionar uma foto do seu dispositivo
             <input type="file" id="p-foto" accept="image/*" style="display:none;" onchange="previewFoto(this)">
           </label>
-          <div id="foto-preview" style="margin-top:8px;display:none;">
+          <div id="foto-preview" style="margin-top:8px;display:none;align-items:center;">
             <img id="foto-img" style="height:80px;object-fit:cover;border:1px solid rgba(216,216,216,0.15);">
             <span style="font-size:11px;color:var(--silver-dim);margin-left:8px;" id="foto-nome"></span>
           </div>
@@ -875,6 +893,7 @@ footer {
       <button class="admin-btn" onclick="adicionarProduto()">ADICIONAR AO PORTFÓLIO</button>
 
       <div class="admin-produtos-list" id="adminList"></div>
+
     </div>
   </div>
 </div>
@@ -927,6 +946,10 @@ footer {
   <div class="footer-copy">© 2025 Imperium Wear · Todos os direitos reservados</div>
 </footer>
 
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
 <!-- MODAL PRODUTO -->
 <div class="modal-overlay" id="modalOverlay" onclick="handleModalClick(event)">
   <div class="modal-box" id="modalBox">
@@ -963,12 +986,65 @@ footer {
 <div class="toast" id="toast"></div>
 
 <script>
-// ── DATA ──
-let produtos = JSON.parse(localStorage.getItem('iw_produtos') || '[]');
+// ── FIREBASE ──
+let produtosRef = null;
+let firebaseOk = false;
+let produtos = [];
 let fotoBase64 = null;
 let whatsNum = localStorage.getItem('iw_whats') || '5551991279805';
 
-function saveProdutos() { localStorage.setItem('iw_produtos', JSON.stringify(produtos)); }
+function iniciarFirebase(config) {
+  try {
+    if (!firebase.apps.length) firebase.initializeApp(config);
+    const db = firebase.database();
+    produtosRef = db.ref('iw_produtos');
+    produtosRef.on('value', snap => {
+      const data = snap.val();
+      produtos = data ? (Array.isArray(data) ? data.filter(Boolean) : Object.values(data).filter(Boolean)) : [];
+      renderProdutos();
+      if (document.getElementById('adminPanel').classList.contains('open')) renderAdminList();
+    });
+    firebaseOk = true;
+    const s = document.getElementById('fb-setup');
+    if (s) s.style.display = 'none';
+    return true;
+  } catch(e) { console.error('Firebase:', e); return false; }
+}
+
+// Carrega config salva automaticamente
+const savedFbConfig = localStorage.getItem('iw_fb_config');
+if (savedFbConfig) {
+  try { iniciarFirebase(JSON.parse(savedFbConfig)); } catch(e) {}
+}
+if (!firebaseOk) {
+  produtos = JSON.parse(localStorage.getItem('iw_produtos') || '[]');
+  renderProdutos();
+}
+
+function configurarFirebase() {
+  const raw = document.getElementById('fb-config-input').value.trim();
+  if (!raw) return;
+  let config;
+  try { config = JSON.parse(raw); } catch(e) {
+    alert('Código inválido. Verifique se copiou tudo (deve começar com { e terminar com }).'); return;
+  }
+  if (iniciarFirebase(config)) {
+    localStorage.setItem('iw_fb_config', raw);
+    const local = JSON.parse(localStorage.getItem('iw_produtos') || '[]');
+    if (local.length) { produtos = local; saveProdutos(); }
+    showToast('Banco de dados conectado! Produtos sincronizados. ✓');
+  } else {
+    alert('Erro ao conectar. Verifique o código e tente novamente.');
+  }
+}
+
+function saveProdutos() {
+  if (produtosRef) {
+    produtosRef.set(produtos.length ? produtos : null);
+  } else {
+    try { localStorage.setItem('iw_produtos', JSON.stringify(produtos)); } catch(e) {}
+  }
+}
 
 function showToast(msg) {
   const t = document.getElementById('toast');
@@ -1057,21 +1133,41 @@ function toggleAdmin() {
 
   panel.classList.add('open');
   icon.textContent = '✕';
+  if (!firebaseOk) document.getElementById('fb-setup').style.display = 'block';
   renderAdminList();
+}
+
+function comprimirImagem(file, callback) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const MAX_W = 700, MAX_H = 900;
+      let w = img.width, h = img.height;
+      if (w > MAX_W || h > MAX_H) {
+        const r = Math.min(MAX_W / w, MAX_H / h);
+        w = Math.round(w * r); h = Math.round(h * r);
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      callback(canvas.toDataURL('image/jpeg', 0.75));
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
 }
 
 function previewFoto(input) {
   const file = input.files[0];
   if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    fotoBase64 = e.target.result;
-    document.getElementById('foto-img').src = fotoBase64;
+  showToast('Carregando imagem...');
+  comprimirImagem(file, compressed => {
+    fotoBase64 = compressed;
+    document.getElementById('foto-img').src = compressed;
     document.getElementById('foto-nome').textContent = file.name;
     document.getElementById('foto-preview').style.display = 'flex';
-    document.getElementById('foto-preview').style.alignItems = 'center';
-  };
-  reader.readAsDataURL(file);
+  });
 }
 
 function adicionarProduto() {
@@ -1091,7 +1187,7 @@ function adicionarProduto() {
   };
   produtos.push(produto);
   saveProdutos();
-  renderProdutos();
+  if (!produtosRef) renderProdutos();
   renderAdminList();
   ['p-nome','p-cat','p-preco','p-cores'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('p-badge').value = '';
@@ -1099,23 +1195,16 @@ function adicionarProduto() {
   document.getElementById('p-foto').value = '';
   document.querySelectorAll('input[name="p-tam"]').forEach(cb => cb.checked = false);
   fotoBase64 = null;
-  showToast(`"${nome}" adicionado ao portfólio! ✓`);
+  showToast(`"${nome}" adicionado com sucesso! ✓`);
 }
 
 function removerProduto(i) {
   if (!confirm('Remover este produto?')) return;
   produtos.splice(i, 1);
   saveProdutos();
-  renderProdutos();
+  if (!produtosRef) renderProdutos();
   renderAdminList();
   showToast('Produto removido.');
-}
-
-function consultarProduto(i) {
-  const p = produtos[i];
-  const num = whatsNum.replace(/\D/g,'');
-  const msg = encodeURIComponent(`Olá! Vi o produto "${p.nome}" no portfólio da Imperium Wear e gostaria de mais informações.`);
-  window.open(`https://wa.me/${num}?text=${msg}`, '_blank');
 }
 
 function enviarWhats() {
@@ -1280,7 +1369,6 @@ function animateCounter(el, target, duration=1500) {
 }
 
 // ── INIT ──
-renderProdutos();
 observeReveal();
 
 // Animate counter when visible
