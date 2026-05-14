@@ -987,6 +987,16 @@ footer {
 
 <script>
 // ── FIREBASE ──
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyDWV8QWj7nVE3JE0tNhwdgEe2-FtexlUK4",
+  authDomain: "imperium2-ae574.firebaseapp.com",
+  databaseURL: "https://imperium2-ae574-default-rtdb.firebaseio.com",
+  projectId: "imperium2-ae574",
+  storageBucket: "imperium2-ae574.firebasestorage.app",
+  messagingSenderId: "802338110157",
+  appId: "1:802338110157:web:090518ad8eab4565068784"
+};
+
 let produtosRef = null;
 let firebaseOk = false;
 let produtos = [];
@@ -1011,11 +1021,9 @@ function iniciarFirebase(config) {
   } catch(e) { console.error('Firebase:', e); return false; }
 }
 
-// Carrega config salva automaticamente
-const savedFbConfig = localStorage.getItem('iw_fb_config');
-if (savedFbConfig) {
-  try { iniciarFirebase(JSON.parse(savedFbConfig)); } catch(e) {}
-}
+// Inicia Firebase automaticamente para todos os visitantes
+iniciarFirebase(FIREBASE_CONFIG);
+
 if (!firebaseOk) {
   produtos = JSON.parse(localStorage.getItem('iw_produtos') || '[]');
   renderProdutos();
