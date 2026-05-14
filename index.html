@@ -1025,8 +1025,13 @@ function configurarFirebase() {
   const raw = document.getElementById('fb-config-input').value.trim();
   if (!raw) return;
   let config;
-  try { config = JSON.parse(raw); } catch(e) {
-    alert('Código inválido. Verifique se copiou tudo (deve começar com { e terminar com }).'); return;
+  try {
+    // Aceita tanto JSON quanto formato JS (sem aspas nas chaves)
+    const limpo = raw.replace(/;$/, '').trim();
+    try { config = JSON.parse(limpo); }
+    catch(e) { config = (new Function('return (' + limpo + ')'))(); }
+  } catch(e) {
+    alert('Código inválido. Verifique se copiou tudo corretamente.'); return;
   }
   if (iniciarFirebase(config)) {
     localStorage.setItem('iw_fb_config', raw);
